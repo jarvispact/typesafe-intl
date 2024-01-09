@@ -1,0 +1,17 @@
+{
+    "extends": "../../tsconfig",
+    "compilerOptions": {
+        "declaration": true,
+        "declarationDir": "./dist",
+        "outDir": "./dist",
+        "noEmit": true,
+        "sourceMap": false,
+        "baseUrl": "./src",
+        "jsx": "react-jsx",
+        "paths": {
+          "@typesafe-intl/core": ["../../core/src/typesafe-intl-core.ts"],
+        }
+    },
+    "include": ["./src"],
+    "exclude": ["node_modules"],
+  }

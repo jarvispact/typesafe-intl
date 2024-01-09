@@ -1,0 +1,35 @@
+{
+  "name": "@typesafe-intl/core",
+  "version": "0.0.1",
+  "description": "a parser written in the typesystem for typesafe interpolations",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/typesafe-intl.umd.js",
+  "module": "./dist/typesafe-intl.js",
+  "types": "./dist/typesafe-intl.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/typesafe-intl.js",
+      "require": "./dist/typesafe-intl.umd.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "rm -rf ./dist && vite build && tsc",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "typesafe",
+    "intl",
+    "i18n",
+    "react",
+    "formatjs",
+    "icu",
+    "translations"
+  ],
+  "author": "jarvispact <jarvispact@gmail.com>",
+  "license": "MIT"
+}

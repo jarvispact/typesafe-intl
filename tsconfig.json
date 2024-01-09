@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "moduleResolution": "node",
+    "strict": true,
+    "strictNullChecks": true,
+    "isolatedModules": true,
+    "esModuleInterop": false,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "useUnknownInCatchVariables": true,
+    "skipLibCheck": true,
+  },
+  "include": ["./packages"],
+}

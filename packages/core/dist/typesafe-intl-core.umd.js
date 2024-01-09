@@ -1,0 +1,1 @@
+(function(e,o){typeof exports=="object"&&typeof module<"u"?o(exports):typeof define=="function"&&define.amd?define(["exports"],o):(e=typeof globalThis<"u"?globalThis:e||self,o(e["typesafe-intl-core"]={}))})(this,function(e){"use strict";const o=n=>{console.log(n)};e.foo=o,Object.defineProperty(e,Symbol.toStringTag,{value:"Module"})});
