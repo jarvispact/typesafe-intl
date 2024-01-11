@@ -5,6 +5,9 @@ import {
     DateInterpolationToken,
     NumberFormatInterpolationToken,
     NumberInterpolationToken,
+    PluralInterpolationToken,
+    SelectInterpolationToken,
+    SelectOrdinalInterpolationToken,
     StringInterpolationToken,
     TimeFormatInterpolationToken,
     TimeInterpolationToken,
@@ -206,4 +209,142 @@ export type TimeFormatTest5 = Expect<
 >;
 export type TimeFormatTest6 = Expect<
     Equals<Tokenize<"Now is: '{now, time, long} Before it was: {before, time, long}'">, []>
+>;
+
+// ===========================================================
+// ===========================================================
+// ===========================================================
+// select interpolations
+
+// TODO: quoting / escaping does not work with select
+
+export type SelectTest1 = Expect<
+    Equals<
+        Tokenize<'{gender, select, male {He} female {She} other {They}} will respond shortly.'>,
+        [SelectInterpolationToken<'gender', 'male' | 'female' | 'other'>]
+    >
+>;
+
+export type SelectTest2 = Expect<
+    Equals<
+        Tokenize<'{ gender,  select, male { He } female  {She } other {They }  } will respond shortly.'>,
+        [SelectInterpolationToken<'gender', 'male' | 'female' | 'other'>]
+    >
+>;
+
+const selectWithNewLines = `
+{gender, select,
+    male {He}
+    female {She}
+    other {They}
+} will respond shortly.
+`;
+
+export type SelectTest3 = Expect<
+    Equals<
+        Tokenize<typeof selectWithNewLines>,
+        [SelectInterpolationToken<'gender', 'male' | 'female' | 'other'>]
+    >
+>;
+
+// ===========================================================
+// ===========================================================
+// ===========================================================
+// plural interpolations
+
+// TODO: quoting / escaping does not work with plural
+
+export type PluralTest1 = Expect<
+    Equals<
+        Tokenize<'{itemCount, plural, one {item} other {items}}'>,
+        [PluralInterpolationToken<'itemCount', 'one' | 'other'>]
+    >
+>;
+
+export type PluralTest2 = Expect<
+    Equals<
+        Tokenize<'{ itemCount, plural , one   {item } other  {  items} }'>,
+        [PluralInterpolationToken<'itemCount', 'one' | 'other'>]
+    >
+>;
+
+const pluralWithNewLines = `
+{itemCount, plural,
+    one {item}
+    other {items}
+}
+`;
+
+export type PluralTest3 = Expect<
+    Equals<
+        Tokenize<typeof pluralWithNewLines>,
+        [PluralInterpolationToken<'itemCount', 'one' | 'other'>]
+    >
+>;
+
+const pluralWithNestedInterpolation = `
+You have {itemCount, plural,
+    =0 {no items}
+    one {1 item}
+    other {{itemCount} items}
+}.
+`;
+
+export type PluralTest4 = Expect<
+    Equals<
+        Tokenize<typeof pluralWithNestedInterpolation>,
+        [PluralInterpolationToken<'itemCount', '=0' | 'one' | 'other'>]
+    >
+>;
+
+const pluralWithHash = `
+You have {itemCount, plural,
+    =0 {no items}
+    one {# item}
+    other {# items}
+}.
+`;
+
+export type PluralTest5 = Expect<
+    Equals<
+        Tokenize<typeof pluralWithHash>,
+        [PluralInterpolationToken<'itemCount', '=0' | 'one' | 'other'>]
+    >
+>;
+
+// ===========================================================
+// ===========================================================
+// ===========================================================
+// select-ordinal interpolations
+
+// TODO: quoting / escaping does not work with select-ordinal
+
+export type SelectOrdinalTest1 = Expect<
+    Equals<
+        Tokenize<"It's my cat's {year, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} birthday!">,
+        [SelectOrdinalInterpolationToken<'year', 'one' | 'two' | 'few' | 'other'>]
+    >
+>;
+
+export type SelectOrdinalTest2 = Expect<
+    Equals<
+        Tokenize<"It's my cat's { year ,   selectordinal, one {#st  } two { #nd} few {   #rd}  other  {#th  } }birthday!">,
+        [SelectOrdinalInterpolationToken<'year', 'one' | 'two' | 'few' | 'other'>]
+    >
+>;
+
+const selectOrdinalWithNewLines = `
+It's my cat's {year, selectordinal,
+    one {#st}
+    two {#nd}
+    few {#rd}
+    other {#th}
+} birthday!
+`;
+
+export type SelectOrdinalTest3 = Expect<
+    Equals<
+        Tokenize<typeof selectOrdinalWithNewLines>,
+        [SelectOrdinalInterpolationToken<'year', 'one' | 'two' | 'few' | 'other'>]
+    >
 >;
