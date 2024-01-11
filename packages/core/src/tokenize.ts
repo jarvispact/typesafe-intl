@@ -61,6 +61,7 @@ type Token =
 
 type States = {
     Start: 'start';
+    Escaped: 'escaped';
     InterpolationStart: 'interpolation-start';
     InterpolationType: 'interpolation-type';
     InterpolationFormat: 'interpolation-format';
@@ -102,16 +103,38 @@ type _Tokenize<
                   CurlyBracketCounter,
                   Tail
               >
-            : _Tokenize<
-                  Tokens,
-                  State,
-                  NameBuffer,
-                  TypeBuffer,
-                  FormatBuffer,
-                  OptionsBuffer,
-                  CurlyBracketCounter,
-                  Tail
-              >
+            : Head extends "'"
+              ? Tail extends `{${infer TailTail}`
+                  ? _Tokenize<
+                        Tokens,
+                        States['Escaped'],
+                        NameBuffer,
+                        TypeBuffer,
+                        FormatBuffer,
+                        OptionsBuffer,
+                        CurlyBracketCounter,
+                        TailTail
+                    >
+                  : _Tokenize<
+                        Tokens,
+                        State,
+                        NameBuffer,
+                        TypeBuffer,
+                        FormatBuffer,
+                        OptionsBuffer,
+                        CurlyBracketCounter,
+                        Tail
+                    >
+              : _Tokenize<
+                    Tokens,
+                    State,
+                    NameBuffer,
+                    TypeBuffer,
+                    FormatBuffer,
+                    OptionsBuffer,
+                    CurlyBracketCounter,
+                    Tail
+                >
         : State extends States['InterpolationStart']
           ? Head extends ','
               ? _Tokenize<
@@ -371,26 +394,33 @@ type _Tokenize<
                             CurlyBracketCounter,
                             Tail
                         >
-                : 'unknown state'
+                : State extends States['Escaped']
+                  ? Tail extends `${string}}'${infer TailTail}`
+                      ? _Tokenize<
+                            Tokens,
+                            States['Start'],
+                            NameBuffer,
+                            TypeBuffer,
+                            FormatBuffer,
+                            OptionsBuffer,
+                            CurlyBracketCounter,
+                            TailTail
+                        >
+                      : Tail extends `${string}}${infer TailTail}`
+                        ? _Tokenize<
+                              Tokens,
+                              States['Start'],
+                              NameBuffer,
+                              TypeBuffer,
+                              FormatBuffer,
+                              OptionsBuffer,
+                              CurlyBracketCounter,
+                              TailTail
+                          >
+                        : 'no idea what to do here'
+                  : 'unknown state'
     : Tokens;
 
 export type Tokenize<Translation extends string> = string extends Translation
     ? string
     : _Tokenize<[], States['Start'], [], [], [], [], 0, Translation>;
-
-type Test = Tokenize<'Hello {name}'>;
-//   ^?
-type Test2 = Tokenize<'Hello {num, number}'>;
-//   ^?
-type Test3 = Tokenize<'Hello {today, date}'>;
-//   ^?
-type Test3 = Tokenize<'Hello {name, number, percent}'>;
-//   ^?
-type Test4 = Tokenize<'Hello {name, date, long}'>;
-//   ^?
-type Test5 = Tokenize<'{gender, select, male {He} other {They}} will respond shortly.'>;
-//   ^?
-type Test6 = Tokenize<'Cart: {itemCount} {itemCount, plural, one {item} other {items}}'>;
-//   ^?
-type Test7 = Tokenize<"It's my {year, selectordinal, one {#st} two {#nd} other {#th}} birthday!">;
-//   ^?

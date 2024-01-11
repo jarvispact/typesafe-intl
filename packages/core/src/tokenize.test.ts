@@ -1,9 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Equals, Expect } from './testing-utils';
-import { NumberInterpolationToken, StringInterpolationToken, Tokenize } from './tokenize';
+import {
+    DateFormatInterpolationToken,
+    DateInterpolationToken,
+    NumberFormatInterpolationToken,
+    NumberInterpolationToken,
+    StringInterpolationToken,
+    Tokenize,
+} from './tokenize';
 
 // test cases are just exported to get rid of the ts error message about unused variables
 
+// ===========================================================
+// ===========================================================
+// ===========================================================
 // string interpolations
 
 export type StringTest01 = Expect<Equals<Tokenize<string>, string>>;
@@ -25,6 +35,9 @@ export type StringTest08 = Expect<
 >;
 export type StringTest09 = Expect<Equals<Tokenize<"Hello '{firstname} {lastname}'">, []>>;
 
+// ===========================================================
+// ===========================================================
+// ===========================================================
 // number interpolations without format
 
 export type NumberTest1 = Expect<
@@ -46,4 +59,94 @@ export type NumberTest5 = Expect<
 >;
 export type NumberTest6 = Expect<
     Equals<Tokenize<"Count: '{num, number} Other count: {num2, number}'">, []>
+>;
+
+// ===========================================================
+// ===========================================================
+// ===========================================================
+// number interpolations with format
+
+export type NumberFormatTest1 = Expect<
+    Equals<
+        Tokenize<'Count: {num, number, percent}'>,
+        [NumberFormatInterpolationToken<'num', 'percent'>]
+    >
+>;
+export type NumberFormatTest2 = Expect<Equals<Tokenize<"Count: '{num, number, percent}">, []>>;
+export type NumberFormatTest3 = Expect<Equals<Tokenize<"Count: '{num, number, percent}'">, []>>;
+export type NumberFormatTest4 = Expect<
+    Equals<
+        Tokenize<'Count: {num, number, percent} Other count: {num2, number, percent}'>,
+        [
+            NumberFormatInterpolationToken<'num', 'percent'>,
+            NumberFormatInterpolationToken<'num2', 'percent'>,
+        ]
+    >
+>;
+export type NumberFormatTest5 = Expect<
+    Equals<
+        Tokenize<"Count: '{num, number, percent} Other count: {num2, number, percent}">,
+        [NumberFormatInterpolationToken<'num2', 'percent'>]
+    >
+>;
+export type NumberFormatTest6 = Expect<
+    Equals<Tokenize<"Count: '{num, number, percent} Other count: {num2, number, percent}'">, []>
+>;
+
+// ===========================================================
+// ===========================================================
+// ===========================================================
+// date interpolations without format
+
+export type DateTest1 = Expect<
+    Equals<Tokenize<'Today is: {today, date}'>, [DateInterpolationToken<'today'>]>
+>;
+export type DateTest2 = Expect<Equals<Tokenize<"Today is: '{today, date}">, []>>;
+export type DateTest3 = Expect<Equals<Tokenize<"Today is: '{today, date}'">, []>>;
+export type DateTest4 = Expect<
+    Equals<
+        Tokenize<'Today is: {today, date} yesterday was: {yesterday, date}'>,
+        [DateInterpolationToken<'today'>, DateInterpolationToken<'yesterday'>]
+    >
+>;
+export type DateTest5 = Expect<
+    Equals<
+        Tokenize<"Today is: '{today, date} yesterday was: {yesterday, date}">,
+        [DateInterpolationToken<'yesterday'>]
+    >
+>;
+export type DateTest6 = Expect<
+    Equals<Tokenize<"Today is: '{today, date} yesterday was: {yesterday, date}'">, []>
+>;
+
+// ===========================================================
+// ===========================================================
+// ===========================================================
+// date interpolations with format
+
+export type DateFormatTest1 = Expect<
+    Equals<
+        Tokenize<'Today is: {today, date, long}'>,
+        [DateFormatInterpolationToken<'today', 'long'>]
+    >
+>;
+export type DateFormatTest2 = Expect<Equals<Tokenize<"Today is: '{today, date, long}">, []>>;
+export type DateFormatTest3 = Expect<Equals<Tokenize<"Today is: '{today, date, long}'">, []>>;
+export type DateFormatTest4 = Expect<
+    Equals<
+        Tokenize<'Today is: {today, date, long} yesterday was: {yesterday, date, long}'>,
+        [
+            DateFormatInterpolationToken<'today', 'long'>,
+            DateFormatInterpolationToken<'yesterday', 'long'>,
+        ]
+    >
+>;
+export type DateFormatTest5 = Expect<
+    Equals<
+        Tokenize<"Today is: '{today, date, long} yesterday was: {yesterday, date, long}">,
+        [DateFormatInterpolationToken<'yesterday', 'long'>]
+    >
+>;
+export type DateFormatTest6 = Expect<
+    Equals<Tokenize<"Today is: '{today, date, long} yesterday was: {num2, number, long}'">, []>
 >;
