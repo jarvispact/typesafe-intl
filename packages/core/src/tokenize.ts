@@ -29,6 +29,17 @@ export type DateFormatInterpolationToken<Name extends string, Format extends str
     format: Format;
 };
 
+export type TimeInterpolationToken<Name extends string> = {
+    type: 'time-interpolation';
+    name: Name;
+};
+
+export type TimeFormatInterpolationToken<Name extends string, Format extends string> = {
+    type: 'time-format-interpolation';
+    name: Name;
+    format: Format;
+};
+
 export type SelectInterpolationToken<Name extends string, Options extends string> = {
     type: 'select-interpolation';
     name: Name;
@@ -53,6 +64,8 @@ type Token =
     | NumberFormatInterpolationToken<string, string>
     | DateInterpolationToken<string>
     | DateFormatInterpolationToken<string, string>
+    | TimeInterpolationToken<string>
+    | TimeFormatInterpolationToken<string, string>
     | SelectInterpolationToken<string, string>
     | PluralInterpolationToken<string, string>
     | SelectOrdinalInterpolationToken<string, string>;
@@ -203,7 +216,18 @@ type _Tokenize<
                               CurlyBracketCounter,
                               Tail
                           >
-                        : ['AA', Head, Tail, NameBuffer, TypeBuffer]
+                        : Trim<Join<TypeBuffer>> extends 'time'
+                          ? _Tokenize<
+                                [...Tokens, TimeInterpolationToken<Trim<Join<NameBuffer>>>],
+                                States['Start'],
+                                [],
+                                [],
+                                [],
+                                [],
+                                CurlyBracketCounter,
+                                Tail
+                            >
+                          : 'unknown interpolation type'
                   : _Tokenize<
                         Tokens,
                         State,
@@ -271,21 +295,38 @@ type _Tokenize<
                               CurlyBracketCounter,
                               Tail
                           >
-                    : Trim<Join<TypeBuffer>> extends 'select'
-                      ? _Tokenize<
-                            Tokens,
-                            States['SelectOptions'],
-                            NameBuffer,
-                            TypeBuffer,
-                            FormatBuffer,
-                            OptionsBuffer,
-                            CurlyBracketCounter,
-                            Tail
-                        >
-                      : Trim<Join<TypeBuffer>> extends 'plural'
+                    : Trim<Join<TypeBuffer>> extends 'time'
+                      ? Head extends '}'
+                          ? _Tokenize<
+                                [
+                                    ...Tokens,
+                                    TimeFormatInterpolationToken<
+                                        Trim<Join<NameBuffer>>,
+                                        Trim<Join<FormatBuffer>>
+                                    >,
+                                ],
+                                States['Start'],
+                                [],
+                                [],
+                                [],
+                                [],
+                                CurlyBracketCounter,
+                                Tail
+                            >
+                          : _Tokenize<
+                                Tokens,
+                                State,
+                                NameBuffer,
+                                TypeBuffer,
+                                [...FormatBuffer, Head],
+                                OptionsBuffer,
+                                CurlyBracketCounter,
+                                Tail
+                            >
+                      : Trim<Join<TypeBuffer>> extends 'select'
                         ? _Tokenize<
                               Tokens,
-                              States['PluralOptions'],
+                              States['SelectOptions'],
                               NameBuffer,
                               TypeBuffer,
                               FormatBuffer,
@@ -293,10 +334,10 @@ type _Tokenize<
                               CurlyBracketCounter,
                               Tail
                           >
-                        : Trim<Join<TypeBuffer>> extends 'selectordinal'
+                        : Trim<Join<TypeBuffer>> extends 'plural'
                           ? _Tokenize<
                                 Tokens,
-                                States['SelectOrdinalOptions'],
+                                States['PluralOptions'],
                                 NameBuffer,
                                 TypeBuffer,
                                 FormatBuffer,
@@ -304,7 +345,18 @@ type _Tokenize<
                                 CurlyBracketCounter,
                                 Tail
                             >
-                          : 'unknown type'
+                          : Trim<Join<TypeBuffer>> extends 'selectordinal'
+                            ? _Tokenize<
+                                  Tokens,
+                                  States['SelectOrdinalOptions'],
+                                  NameBuffer,
+                                  TypeBuffer,
+                                  FormatBuffer,
+                                  OptionsBuffer,
+                                  CurlyBracketCounter,
+                                  Tail
+                              >
+                            : 'unknown type'
               : State extends
                       | States['SelectOptions']
                       | States['PluralOptions']

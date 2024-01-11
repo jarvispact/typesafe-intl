@@ -6,6 +6,8 @@ import {
     NumberFormatInterpolationToken,
     NumberInterpolationToken,
     StringInterpolationToken,
+    TimeFormatInterpolationToken,
+    TimeInterpolationToken,
     Tokenize,
 } from './tokenize';
 
@@ -148,5 +150,60 @@ export type DateFormatTest5 = Expect<
     >
 >;
 export type DateFormatTest6 = Expect<
-    Equals<Tokenize<"Today is: '{today, date, long} yesterday was: {num2, number, long}'">, []>
+    Equals<Tokenize<"Today is: '{today, date, long} yesterday was: {yesterday, date, long}'">, []>
+>;
+
+// ===========================================================
+// ===========================================================
+// ===========================================================
+// time interpolations without format
+
+export type TimeTest1 = Expect<
+    Equals<Tokenize<'Now is: {now, time}'>, [TimeInterpolationToken<'now'>]>
+>;
+export type TimeTest2 = Expect<Equals<Tokenize<"Now is: '{now, time}">, []>>;
+export type TimeTest3 = Expect<Equals<Tokenize<"Now is: '{now, time}'">, []>>;
+export type TimeTest4 = Expect<
+    Equals<
+        Tokenize<'Now is: {now, time} Before it was: {before, time}'>,
+        [TimeInterpolationToken<'now'>, TimeInterpolationToken<'before'>]
+    >
+>;
+export type TimeTest5 = Expect<
+    Equals<
+        Tokenize<"Now is: '{now, time} Before it was: {before, time}">,
+        [TimeInterpolationToken<'before'>]
+    >
+>;
+export type TimeTest6 = Expect<
+    Equals<Tokenize<"Now is: '{now, time} Before it was: {before, time}'">, []>
+>;
+
+// ===========================================================
+// ===========================================================
+// ===========================================================
+// time interpolations with format
+
+export type TimeFormatTest1 = Expect<
+    Equals<Tokenize<'Now is: {now, time, long}'>, [TimeFormatInterpolationToken<'now', 'long'>]>
+>;
+export type TimeFormatTest2 = Expect<Equals<Tokenize<"Now is: '{now, time, long}">, []>>;
+export type TimeFormatTest3 = Expect<Equals<Tokenize<"Now is: '{now, time, long}'">, []>>;
+export type TimeFormatTest4 = Expect<
+    Equals<
+        Tokenize<'Now is: {now, time, long} Before it was: {before, time, long}'>,
+        [
+            TimeFormatInterpolationToken<'now', 'long'>,
+            TimeFormatInterpolationToken<'before', 'long'>,
+        ]
+    >
+>;
+export type TimeFormatTest5 = Expect<
+    Equals<
+        Tokenize<"Now is: '{now, time, long} Before it was: {before, time, long}">,
+        [TimeFormatInterpolationToken<'before', 'long'>]
+    >
+>;
+export type TimeFormatTest6 = Expect<
+    Equals<Tokenize<"Now is: '{now, time, long} Before it was: {before, time, long}'">, []>
 >;
