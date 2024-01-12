@@ -1,5 +1,5 @@
 import { FormattedMessage as _FormattedMessage, useIntl as _useIntl } from 'react-intl';
-import { ExtendTypesForInterpolations, InferInterpolations } from '@typesafe-intl/core';
+import { ExtendTypesForInterpolations, InferInterpolations, Tokenize } from '@typesafe-intl/core';
 import { ReactNode } from 'react';
 
 type _TypesForInterpolations = ExtendTypesForInterpolations<{
@@ -8,14 +8,20 @@ type _TypesForInterpolations = ExtendTypesForInterpolations<{
 
 export interface TypesForInterpolations extends _TypesForInterpolations {}
 
-export type FormattedMessageProps<Translation extends string> = {
-    id?: string;
+type CommonFormattedMessageProps<Translation extends string> = {
     defaultMessage?: Translation;
+    id?: string;
     description?: string;
-    values?: InferInterpolations<Translation, TypesForInterpolations>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     tagName?: React.ElementType<any>;
 };
+
+export type FormattedMessageProps<Translation extends string> =
+    Tokenize<Translation> extends []
+        ? CommonFormattedMessageProps<Translation>
+        : CommonFormattedMessageProps<Translation> & {
+              values: InferInterpolations<Translation, TypesForInterpolations>;
+          };
 
 export const FormattedMessage = <Translation extends string>(
     props: FormattedMessageProps<Translation>,

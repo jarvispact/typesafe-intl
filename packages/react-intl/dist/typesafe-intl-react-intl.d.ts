@@ -1,16 +1,18 @@
-import { ExtendTypesForInterpolations, InferInterpolations } from '@typesafe-intl/core';
+import { ExtendTypesForInterpolations, InferInterpolations, Tokenize } from '@typesafe-intl/core';
 import { ReactNode } from 'react';
 type _TypesForInterpolations = ExtendTypesForInterpolations<{
     'rich-text-interpolation': (chunks: ReactNode[]) => ReactNode;
 }>;
 export interface TypesForInterpolations extends _TypesForInterpolations {
 }
-export type FormattedMessageProps<Translation extends string> = {
-    id?: string;
+type CommonFormattedMessageProps<Translation extends string> = {
     defaultMessage?: Translation;
+    id?: string;
     description?: string;
-    values?: InferInterpolations<Translation, TypesForInterpolations>;
     tagName?: React.ElementType<any>;
+};
+export type FormattedMessageProps<Translation extends string> = Tokenize<Translation> extends [] ? CommonFormattedMessageProps<Translation> : CommonFormattedMessageProps<Translation> & {
+    values: InferInterpolations<Translation, TypesForInterpolations>;
 };
 export declare const FormattedMessage: <Translation extends string>(props: FormattedMessageProps<Translation>) => import("react/jsx-runtime").JSX.Element;
 type FormatMessageDescriptor<Translation extends string> = {

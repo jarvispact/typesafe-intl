@@ -3,17 +3,18 @@
   "version": "0.0.3",
   "description": "typesafe interpolations for icu message format based translations",
   "scripts": {
-    "build": "npm run build --workspaces",
-    "publish-to-npm": "npm run publish-to-npm --workspaces",
-    "version:patch": "npm run version:patch --workspaces",
-    "version:minor": "npm run version:minor --workspaces",
-    "version:major": "npm run version:major --workspaces"
+    "build": "npm run build --workspaces --if-present",
+    "publish-to-npm": "npm run publish-to-npm --workspaces --if-present",
+    "version:patch": "npm run version:patch --workspaces --if-present",
+    "version:minor": "npm run version:minor --workspaces --if-present",
+    "version:major": "npm run version:major --workspaces --if-present"
   },
   "author": "jarvispact <jarvispact@gmail.com>",
   "license": "MIT",
   "workspaces": [
     "packages/core",
-    "packages/react-intl"
+    "packages/react-intl",
+    "packages/react-intl-examples"
   ],
   "devDependencies": {
     "@types/node": "^20.10.7",

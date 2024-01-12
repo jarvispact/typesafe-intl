@@ -1,4 +1,4 @@
-import { SelectInterpolationToken, Token, Tokenize } from './tokenize';
+import { PluralInterpolationToken, SelectInterpolationToken, Token, Tokenize } from './tokenize';
 
 type SafeExclude<T, U extends T> = T extends U ? never : T;
 type UnknownTypeMap = { [Key in Token['type']]: unknown };
@@ -31,15 +31,28 @@ type _TokensToInterpolations<
     Obj extends NonNullable<unknown>,
     Tokens extends Token[],
 > = Tokens extends [infer Head extends Token, ...infer Tail extends Token[]]
-    ? _TokensToInterpolations<
-          TypeMap,
-          Obj & {
-              [Key in Head['name']]: Head extends SelectInterpolationToken<string, infer Options>
-                  ? TypeMap[Head['type']] | Options
-                  : TypeMap[SafeExclude<Head['type'], 'select-interpolation'>];
-          },
-          Tail
-      >
+    ? Head['name'] extends keyof Obj
+        ? Head extends PluralInterpolationToken<infer Name, string> // special case: '{itemCount} {itemCount, plural, one {item} other {items}}'
+            ? _TokensToInterpolations<
+                  TypeMap,
+                  Omit<Obj, Name> & {
+                      [Key in Name]: TypeMap[Head['type']];
+                  },
+                  Tail
+              >
+            : 'B'
+        : _TokensToInterpolations<
+              TypeMap,
+              Obj & {
+                  [Key in Head['name']]: Head extends SelectInterpolationToken<
+                      string,
+                      infer Options
+                  >
+                      ? TypeMap[Head['type']] | Options
+                      : TypeMap[SafeExclude<Head['type'], 'select-interpolation'>];
+              },
+              Tail
+          >
     : Obj;
 
 type TokensToInterpolations<

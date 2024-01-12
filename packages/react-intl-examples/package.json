@@ -1,0 +1,25 @@
+{
+  "name": "@typesafe-intl/react-intl-examples",
+  "description": "example app to test the @typesafe-intl/react-intl package",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 9090",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview --port 9091"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-intl": "^6.0.1",
+    "@typesafe-intl/core": "^0.0.3",
+    "@typesafe-intl/react-intl": "^0.0.3"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1"
+  }
+}
