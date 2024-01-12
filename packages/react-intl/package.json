@@ -21,7 +21,9 @@
   "scripts": {
     "dev": "vite",
     "build": "rm -rf ./dist && vite build && tsc -p ./tsconfig-build.json",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "publish": "npm publish",
+    "version": "npm version"
   },
   "peerDependencies": {
     "react-intl": "^6.0.1",

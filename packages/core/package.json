@@ -20,7 +20,8 @@
     "dev": "vite",
     "build": "rm -rf ./dist && vite build && tsc",
     "preview": "vite preview",
-    "publish": "npm publish"
+    "publish": "npm publish",
+    "version": "npm version"
   },
   "keywords": [
     "typesafe",

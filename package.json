@@ -4,7 +4,8 @@
   "description": "typesafe interpolations for icu message format based translations",
   "scripts": {
     "build": "npm run build --workspaces",
-    "publish": "npm run publish --workspaces"
+    "publish": "npm run publish --workspaces",
+    "version": "npm run version --workspaces"
   },
   "author": "jarvispact <jarvispact@gmail.com>",
   "license": "MIT",
