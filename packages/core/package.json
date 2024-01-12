@@ -4,16 +4,16 @@
   "description": "a parser written in the typesystem for typesafe interpolations",
   "type": "module",
   "sideEffects": false,
-  "main": "./dist/typesafe-intl.umd.js",
-  "module": "./dist/typesafe-intl.js",
-  "types": "./dist/typesafe-intl.d.ts",
+  "main": "./dist/typesafe-intl-core.umd.js",
+  "module": "./dist/typesafe-intl-core.js",
+  "types": "./dist/typesafe-intl-core.d.ts",
   "publishConfig": {
     "access": "public"
   },
   "exports": {
     ".": {
-      "import": "./dist/typesafe-intl.js",
-      "require": "./dist/typesafe-intl.umd.js"
+      "import": "./dist/typesafe-intl-core.js",
+      "require": "./dist/typesafe-intl-core.umd.js"
     }
   },
   "scripts": {
