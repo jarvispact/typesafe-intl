@@ -19,7 +19,7 @@ type FormatMessageDescriptor<Translation extends string> = {
     description?: string;
 };
 export declare const useIntl: () => {
-    formatMessage: <Translation extends string>(messageDescriptor: FormatMessageDescriptor<Translation>, values?: any) => string;
+    formatMessage: <Translation extends string>(messageDescriptor: FormatMessageDescriptor<Translation>, values?: InferInterpolations<Translation, TypesForInterpolations> | undefined) => string;
     formatters: import("react-intl").Formatters;
     textComponent?: import("react").ComponentType<{}> | keyof import("react").ReactHTML | undefined;
     wrapRichTextChunksInFragment?: boolean | undefined;

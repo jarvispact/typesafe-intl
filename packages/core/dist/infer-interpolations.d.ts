@@ -1,4 +1,5 @@
-import { Token, Tokenize } from './tokenize';
+import { SelectInterpolationToken, Token, Tokenize } from './tokenize';
+type SafeExclude<T, U extends T> = T extends U ? never : T;
 type UnknownTypeMap = {
     [Key in Token['type']]: unknown;
 };
@@ -10,15 +11,15 @@ type DefaultTypesForInterpolations = DefineTypesForInterpolations<{
     'date-interpolation': Date;
     'date-format-interpolation': Date;
     'time-interpolation': Date;
+    'select-interpolation': never;
     'time-format-interpolation': Date;
-    'select-interpolation': 'a' | 'b';
     'plural-interpolation': number;
     'select-ordinal-interpolation': number;
     'rich-text-interpolation': (chunks: any[]) => any;
 }>;
 export type ExtendTypesForInterpolations<T extends Partial<UnknownTypeMap>> = Omit<DefaultTypesForInterpolations, keyof T> & T;
 type _TokensToInterpolations<TypeMap extends UnknownTypeMap, Obj extends NonNullable<unknown>, Tokens extends Token[]> = Tokens extends [infer Head extends Token, ...infer Tail extends Token[]] ? _TokensToInterpolations<TypeMap, Obj & {
-    [Key in Head['name']]: TypeMap[Head['type']];
+    [Key in Head['name']]: Head extends SelectInterpolationToken<string, infer Options> ? TypeMap[Head['type']] | Options : TypeMap[SafeExclude<Head['type'], 'select-interpolation'>];
 }, Tail> : Obj;
 type TokensToInterpolations<TypeMap extends UnknownTypeMap, Tokens extends Token[]> = _TokensToInterpolations<TypeMap, NonNullable<unknown>, Tokens>;
 export type InferInterpolations<Translation extends string, TypeMap extends UnknownTypeMap = DefaultTypesForInterpolations> = string extends Translation ? Record<string, never> : TokensToInterpolations<TypeMap, Tokenize<Translation>>;

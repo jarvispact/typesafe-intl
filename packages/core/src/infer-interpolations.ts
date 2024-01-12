@@ -1,5 +1,6 @@
-import { Token, Tokenize } from './tokenize';
+import { SelectInterpolationToken, Token, Tokenize } from './tokenize';
 
+type SafeExclude<T, U extends T> = T extends U ? never : T;
 type UnknownTypeMap = { [Key in Token['type']]: unknown };
 
 export type DefineTypesForInterpolations<T extends UnknownTypeMap> = T;
@@ -11,8 +12,8 @@ type DefaultTypesForInterpolations = DefineTypesForInterpolations<{
     'date-interpolation': Date;
     'date-format-interpolation': Date;
     'time-interpolation': Date;
+    'select-interpolation': never;
     'time-format-interpolation': Date;
-    'select-interpolation': 'a' | 'b';
     'plural-interpolation': number;
     'select-ordinal-interpolation': number;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,7 +31,15 @@ type _TokensToInterpolations<
     Obj extends NonNullable<unknown>,
     Tokens extends Token[],
 > = Tokens extends [infer Head extends Token, ...infer Tail extends Token[]]
-    ? _TokensToInterpolations<TypeMap, Obj & { [Key in Head['name']]: TypeMap[Head['type']] }, Tail>
+    ? _TokensToInterpolations<
+          TypeMap,
+          Obj & {
+              [Key in Head['name']]: Head extends SelectInterpolationToken<string, infer Options>
+                  ? TypeMap[Head['type']] | Options
+                  : TypeMap[SafeExclude<Head['type'], 'select-interpolation'>];
+          },
+          Tail
+      >
     : Obj;
 
 type TokensToInterpolations<
