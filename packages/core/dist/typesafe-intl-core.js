@@ -1,4 +1,2 @@
-export const foo = (x) => {
-    console.log(x);
-};
+export {};
 //# sourceMappingURL=typesafe-intl-core.js.map

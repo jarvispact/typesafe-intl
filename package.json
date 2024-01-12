@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "typesafe interpolations for icu message format based translations",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build --workspaces",
+    "publish": "npm run publish --workspaces"
   },
   "author": "jarvispact <jarvispact@gmail.com>",
   "license": "MIT",

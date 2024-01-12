@@ -1,1 +1,1 @@
-export declare const foo: (x: string) => void;
+export type { InferInterpolations, DefineTypesForInterpolations, ExtendTypesForInterpolations, } from './infer-interpolations';

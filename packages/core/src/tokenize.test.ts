@@ -6,6 +6,7 @@ import {
     NumberFormatInterpolationToken,
     NumberInterpolationToken,
     PluralInterpolationToken,
+    RichTextInterpolationToken,
     SelectInterpolationToken,
     SelectOrdinalInterpolationToken,
     StringInterpolationToken,
@@ -21,7 +22,7 @@ import {
 // ===========================================================
 // string interpolations
 
-export type StringTest01 = Expect<Equals<Tokenize<string>, string>>;
+export type StringTest01 = Expect<Equals<Tokenize<string>, []>>;
 export type StringTest02 = Expect<Equals<Tokenize<''>, []>>;
 export type StringTest03 = Expect<Equals<Tokenize<'Hello'>, []>>;
 export type StringTest04 = Expect<
@@ -346,5 +347,46 @@ export type SelectOrdinalTest3 = Expect<
     Equals<
         Tokenize<typeof selectOrdinalWithNewLines>,
         [SelectOrdinalInterpolationToken<'year', 'one' | 'two' | 'few' | 'other'>]
+    >
+>;
+
+// ===========================================================
+// ===========================================================
+// ===========================================================
+// rich text interpolations
+
+export type RichTextTest1 = Expect<
+    Equals<
+        Tokenize<'The answer is <boldThis>42</boldThis>'>,
+        [RichTextInterpolationToken<'boldThis'>]
+    >
+>;
+
+export type RichTextTest2 = Expect<
+    Equals<
+        Tokenize<'The answer is <boldThis>42 and some italic <i>info</i></boldThis>'>,
+        [RichTextInterpolationToken<'boldThis'>, RichTextInterpolationToken<'i'>]
+    >
+>;
+
+export type RichTextTest3 = Expect<
+    Equals<
+        Tokenize<'Our price is <boldThis>{price, number, ::currency/USD precision-integer}</boldThis>'>,
+        [
+            RichTextInterpolationToken<'boldThis'>,
+            NumberFormatInterpolationToken<'price', '::currency/USD precision-integer'>,
+        ]
+    >
+>;
+
+export type RichTextTest4 = Expect<
+    Equals<
+        Tokenize<'The answer is <boldThis>42 and your name in italic <i>{name}</i>.Today is {today, date} btw</boldThis>'>,
+        [
+            RichTextInterpolationToken<'boldThis'>,
+            RichTextInterpolationToken<'i'>,
+            StringInterpolationToken<'name'>,
+            DateInterpolationToken<'today'>,
+        ]
     >
 >;

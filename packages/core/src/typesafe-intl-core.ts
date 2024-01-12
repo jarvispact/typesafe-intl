@@ -1,3 +1,5 @@
-export const foo = (x: string) => {
-    console.log(x);
-};
+export type {
+    InferInterpolations,
+    DefineTypesForInterpolations,
+    ExtendTypesForInterpolations,
+} from './infer-interpolations';

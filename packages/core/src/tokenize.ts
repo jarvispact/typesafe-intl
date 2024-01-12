@@ -58,7 +58,12 @@ export type SelectOrdinalInterpolationToken<Name extends string, Options extends
     options: Options;
 };
 
-type Token =
+export type RichTextInterpolationToken<Tag extends string> = {
+    type: 'rich-text-interpolation';
+    name: Tag;
+};
+
+export type Token =
     | StringInterpolationToken<string>
     | NumberInterpolationToken<string>
     | NumberFormatInterpolationToken<string, string>
@@ -68,7 +73,8 @@ type Token =
     | TimeFormatInterpolationToken<string, string>
     | SelectInterpolationToken<string, string>
     | PluralInterpolationToken<string, string>
-    | SelectOrdinalInterpolationToken<string, string>;
+    | SelectOrdinalInterpolationToken<string, string>
+    | RichTextInterpolationToken<string>;
 
 // states
 
@@ -81,6 +87,7 @@ type States = {
     SelectOptions: 'select-options';
     PluralOptions: 'plural-options';
     SelectOrdinalOptions: 'select-ordinal-options';
+    RichText: 'rich-text';
 };
 
 // tokenize
@@ -138,16 +145,27 @@ type _Tokenize<
                         CurlyBracketCounter,
                         Tail
                     >
-              : _Tokenize<
-                    Tokens,
-                    State,
-                    NameBuffer,
-                    TypeBuffer,
-                    FormatBuffer,
-                    OptionsBuffer,
-                    CurlyBracketCounter,
-                    Tail
-                >
+              : Head extends '<'
+                ? _Tokenize<
+                      Tokens,
+                      States['RichText'],
+                      NameBuffer,
+                      TypeBuffer,
+                      FormatBuffer,
+                      OptionsBuffer,
+                      CurlyBracketCounter,
+                      Tail
+                  >
+                : _Tokenize<
+                      Tokens,
+                      State,
+                      NameBuffer,
+                      TypeBuffer,
+                      FormatBuffer,
+                      OptionsBuffer,
+                      CurlyBracketCounter,
+                      Tail
+                  >
         : State extends States['InterpolationStart']
           ? Head extends ','
               ? _Tokenize<
@@ -470,9 +488,48 @@ type _Tokenize<
                               TailTail
                           >
                         : 'no idea what to do here'
-                  : 'unknown state'
+                  : State extends States['RichText']
+                    ? Head extends '>'
+                        ? Tail extends `${infer Children}</${Trim<
+                              Join<NameBuffer>
+                          >}>${infer TailTail}`
+                            ? _Tokenize<
+                                  [
+                                      ...Tokens,
+                                      RichTextInterpolationToken<Trim<Join<NameBuffer>>>,
+                                      ..._Tokenize<
+                                          [],
+                                          States['Start'],
+                                          [],
+                                          [],
+                                          [],
+                                          [],
+                                          0,
+                                          Children
+                                      >,
+                                  ],
+                                  States['Start'],
+                                  [],
+                                  [],
+                                  [],
+                                  [],
+                                  CurlyBracketCounter,
+                                  TailTail
+                              >
+                            : 'invalid rich text'
+                        : _Tokenize<
+                              Tokens,
+                              State,
+                              [...NameBuffer, Head],
+                              TypeBuffer,
+                              FormatBuffer,
+                              OptionsBuffer,
+                              CurlyBracketCounter,
+                              Tail
+                          >
+                    : 'unknown-state'
     : Tokens;
 
 export type Tokenize<Translation extends string> = string extends Translation
-    ? string
+    ? []
     : _Tokenize<[], States['Start'], [], [], [], [], 0, Translation>;
