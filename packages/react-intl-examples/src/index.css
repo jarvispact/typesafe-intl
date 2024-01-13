@@ -20,3 +20,9 @@ h2 {
     gap: 2rem;
     padding: 1rem;
 }
+
+.action-section {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+}

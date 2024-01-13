@@ -40,8 +40,12 @@ export const useIntl = () => {
     return {
         ...intl,
         formatMessage: <Translation extends string>(
-            messageDescriptor: FormatMessageDescriptor<Translation>,
-            values?: InferInterpolations<Translation, TypesForInterpolations>,
-        ) => intl.formatMessage(messageDescriptor, values),
+            ...args: Tokenize<Translation> extends []
+                ? [FormatMessageDescriptor<Translation>]
+                : [
+                      FormatMessageDescriptor<Translation>,
+                      InferInterpolations<Translation, TypesForInterpolations>,
+                  ]
+        ) => intl.formatMessage(args[0], args[1]),
     };
 };
