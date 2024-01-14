@@ -1,5 +1,5 @@
 # typesafe-intl
-Typesafe interpolation values for [ICU message format](https://formatjs.io/docs/core-concepts/icu-syntax/) based translation strings.
+Automatic typesafe interpolation values for [ICU message format](https://formatjs.io/docs/core-concepts/icu-syntax/) based translation strings.
 
 ## Why?
 
@@ -7,11 +7,11 @@ Typesafe interpolation values for [ICU message format](https://formatjs.io/docs/
 - 💡 Instant feedback without type generation. Everything is inferred!
 - 🚀 Awesome DX with autocomplete / intellisense across all editors.
 - 🛠️ Confidently make changes, also in large and complex codebases.
-- 🤝 Works with your existing `react-intl` message-extraction / id-generation workflow
+- 🤝 Works with your existing [react-intl](https://www.npmjs.com/package/react-intl) message-extraction / id-generation workflow
 
 Here you can see how the type for the `values` prop is automatically added/removed and inferred from the `defaultMessage` prop as you type.
 
-![example](res/formatted-message-example.gif);
+![example](res/formatted-message-example.gif)
 
 ## Overview
 
@@ -22,7 +22,7 @@ It consists of two main packages:
 1. [@typesafe-intl/core](packages/core/README.md): A ICU message format parser written in Typescript.
 2. [@typesafe-intl/react-intl](packages/react-intl/README.md): A wrapper around the popular [react-intl](https://www.npmjs.com/package/react-intl) library, integrating `@typesafe-intl/core` for automatic typesafe interpolation values.
 
-This package does not contain or adds any runtime javascript code. It is working just at the type level. All of the javascript functionality comes from the well established [react-intl](https://www.npmjs.com/package/react-intl) library itself.
+This package does not contain or adds any runtime javascript code. It works just at the type level. All of the javascript functionality comes from the well established `react-intl` library itself.
 
 ## Quick Start Guide
 
