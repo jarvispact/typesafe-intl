@@ -136,3 +136,6 @@ With this declaration the following types will be inferred:
 |-------------|----------------------------------|-----------------------------|
 | String      | `"Hello {who}!"`                 | `{ who: string \| number }` |
 | Date        | `"Sale begins on {start, date}"` | `{ start: Date \| number }` |
+
+
+A full list of all possible / supported overrides can be found [here](https://github.com/jarvispact/typesafe-intl/blob/main/packages/core/src/infer-interpolations.ts#L8)
