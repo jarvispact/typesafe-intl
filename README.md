@@ -77,7 +77,7 @@ const SayHi = () => {
     return (
         <p>
             <FormattedMessage
-                id="SAY_HI"
+                id="SAY_HI" // autocompletion for the id
                 values={{ who: 'World' }} // inferred as { who: string }
             />
         </p>
@@ -91,7 +91,7 @@ const SayHi = () => {
     return (
         <p>
             {formatMessage(
-                { id: 'SAY_HI' },
+                { id: 'SAY_HI' }, // autocompletion for the id
                 { who: 'World' } // inferred as { who: string }
             )}
         </p>
