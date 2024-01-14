@@ -86,7 +86,8 @@ const SayHi = () => {
 
 // Hook API
 const SayHi = () => {
-    const { formatMessage } = useIntl();
+    // pass the type of your messages to the hook for autcompletion on the `id` prop and typesafe interpolations
+    const { formatMessage } = useIntl<typeof messages>();
     return (
         <p>
             {formatMessage(
@@ -97,3 +98,41 @@ const SayHi = () => {
     );
 }
 ```
+
+### ICU syntax examples
+
+| Explanation                  | ICU Syntax                                                                      | Typescript                                     |
+|------------------------------|---------------------------------------------------------------------------------|------------------------------------------------|
+| String                       | `"Hello {who}!"`                                                                | `{ who: string }`                              |
+| Number                       | `"{unreadEmails, number} unread Emails"`                                        | `{ unreadEmails: number }`                     |
+| Number with format: percent  | `"{percent, number, percent} complete"`                                         | `{ percent: number }`                          |
+| Number with format: currency | `"Price: {price, number, ::currency/GBP}"`                                      | `{ price: number }`                            |
+| Date                         | `"Sale begins on {start, date}"`                                                | `{ start: Date }`                              |
+| Date with format: full       | `"Sale begins on {start, date, full}"`                                          | `{ start: Date }`                              |
+| Time                         | `"Coupon expires at {expires, time}"`                                           | `{ expires: Date }`                            |
+| Time with format: full       | `"Coupon expires at {expires, time, full}"`                                     | `{ expires: Date }`                            |
+| Select (enums)               | `"{gender, select, male {He} female {She} other {They}} will respond shortly."` | `{ gender: 'male' \| 'female' \| 'other' }`    |
+| Plural                       | `"You have {itemCount, plural, =0 {no items} one {# item} other {# items}}."`   | `{ itemCount: number }`                        |
+| Rich text                    | `"Our price is <bold>very low</bold>"`                                          | `{ bold: (chunks: ReactNode[]) => ReactNode }` |
+| Escaping                     | `"Hello '{firstname}' {lastname}"`                                              | `{ lastname: string }`                         |
+
+
+### Specify / override the typescript types
+
+All of the typescript types can be overridden by using module augmentation.
+
+```ts
+declare module '@typesafe-intl/react-intl' {
+    export interface TypesForInterpolations {
+        'string-interpolation': string | number;
+        'date-interpolation': Date | number;
+    }
+}
+```
+
+With this declaration the following types will be inferred:
+
+| Explanation | ICU Syntax                       | Typescript                  |
+|-------------|----------------------------------|-----------------------------|
+| String      | `"Hello {who}!"`                 | `{ who: string \| number }` |
+| Date        | `"Sale begins on {start, date}"` | `{ start: Date \| number }` |
