@@ -14,8 +14,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-intl": "^6.0.1",
-    "@typesafe-intl/core": "^0.0.3",
-    "@typesafe-intl/react-intl": "^0.0.3"
+    "@typesafe-intl/core": "^0.0.5",
+    "@typesafe-intl/react-intl": "^0.0.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
