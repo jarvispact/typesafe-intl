@@ -7,6 +7,7 @@ Typesafe interpolation values for [ICU message format](https://formatjs.io/docs/
 - 💡 Instant feedback without type generation. Everything is inferred!
 - 🚀 Awesome DX with autocomplete / intellisense across all editors.
 - 🛠️ Confidently make changes, also in large and complex codebases.
+- 🤝 Works with your existing `react-intl` message-extraction / id-generation workflow
 
 Here you can see how the type for the `values` prop is automatically added/removed and inferred from the `defaultMessage` prop as you type.
 
