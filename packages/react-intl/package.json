@@ -1,7 +1,7 @@
 {
   "name": "@typesafe-intl/react-intl",
   "version": "0.0.5",
-  "description": "react-intl bindings for @typesafe-intl/core",
+  "description": "A wrapper around the popular react-intl library integrating `@typesafe-intl/core` for automatic typesafe interpolation values",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/typesafe-intl-react-intl.umd.js",
