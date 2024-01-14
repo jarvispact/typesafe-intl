@@ -287,21 +287,21 @@ const FormatMessageHookUsingDefaultMessage = () => {
     );
 };
 
-type View = 'default-message-formatted-message' | 'default-message-format-message-hook';
+type View = 'formatted-message-with-default-message' | 'format-message-hook-with-default-message';
 
 export const App = () => {
-    const [view, setView] = useState<View>('default-message-formatted-message');
+    const [view, setView] = useState<View>('formatted-message-with-default-message');
     return (
         <div>
             <div className="action-section">
-                <button onClick={() => setView('default-message-formatted-message')}>
+                <button onClick={() => setView('formatted-message-with-default-message')}>
                     FormattedMessage with defaultMessage
                 </button>
-                <button onClick={() => setView('default-message-format-message-hook')}>
+                <button onClick={() => setView('format-message-hook-with-default-message')}>
                     formatMessage hook with defaultMessage
                 </button>
             </div>
-            {view === 'default-message-formatted-message' && (
+            {view === 'formatted-message-with-default-message' && (
                 <div className="section">
                     {['en-US', 'en-GB'].map((locale) => (
                         <IntlProvider
@@ -322,7 +322,7 @@ export const App = () => {
                     ))}
                 </div>
             )}
-            {view === 'default-message-format-message-hook' && (
+            {view === 'format-message-hook-with-default-message' && (
                 <div className="section">
                     {['en-US', 'en-GB'].map((locale) => (
                         <IntlProvider
