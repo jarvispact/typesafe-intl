@@ -1,6 +1,17 @@
 # typesafe-intl
 Typesafe interpolation values for [ICU message format](https://formatjs.io/docs/core-concepts/icu-syntax/) based translation strings.
 
+## Why?
+
+- 🐞 Catch bugs at compile time, rather than execution time.
+- 💡 Instant feedback without type generation. Everything is inferred!
+- 🚀 Awesome DX with autocomplete / intellisense across all editors.
+- 🛠️ Confidently make changes, also in large and complex codebases.
+
+Here you can see how the type for the `values` prop is automatically added/removed and inferred from the `defaultMessage` prop as you type.
+
+![example](res/formatted-message-example.gif);
+
 ## Overview
 
 The goal of this project is to write a fully compliant ICU message format parser in Typescript's type system that provides typesafe interpolation values just by using inference. **No types are generated!**
