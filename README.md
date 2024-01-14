@@ -99,6 +99,8 @@ const SayHi = () => {
 }
 ```
 
+## Documentation
+
 ### ICU syntax examples
 
 | Explanation                  | ICU Syntax                                                                      | Typescript                                     |
