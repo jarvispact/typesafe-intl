@@ -288,6 +288,13 @@ const FormatMessageHookUsingDefaultMessage = () => {
     );
 };
 
+// declare module '@typesafe-intl/react-intl' {
+//     export interface TypesForInterpolations {
+//         'string-interpolation': string | number;
+//         'date-format-interpolation': Date | number;
+//     }
+// }
+
 const messages = {
     test1: 'Hello',
     test2: 'Hello {who}!',
