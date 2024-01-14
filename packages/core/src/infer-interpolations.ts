@@ -3,9 +3,9 @@ import { PluralInterpolationToken, SelectInterpolationToken, Token, Tokenize } f
 type SafeExclude<T, U extends T> = T extends U ? never : T;
 type UnknownTypeMap = { [Key in Token['type']]: unknown };
 
-export type DefineTypesForInterpolations<T extends UnknownTypeMap> = T;
+type DefineTypesForInterpolations<T extends UnknownTypeMap> = T;
 
-type DefaultTypesForInterpolations = DefineTypesForInterpolations<{
+export type DefaultTypesForInterpolations = DefineTypesForInterpolations<{
     'string-interpolation': string;
     'number-interpolation': number;
     'number-format-interpolation': number;
@@ -19,12 +19,6 @@ type DefaultTypesForInterpolations = DefineTypesForInterpolations<{
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     'rich-text-interpolation': (chunks: any[]) => any;
 }>;
-
-export type ExtendTypesForInterpolations<T extends Partial<UnknownTypeMap>> = Omit<
-    DefaultTypesForInterpolations,
-    keyof T
-> &
-    T;
 
 type _TokensToInterpolations<
     TypeMap extends UnknownTypeMap,
@@ -40,7 +34,7 @@ type _TokensToInterpolations<
                   },
                   Tail
               >
-            : 'B'
+            : never
         : _TokensToInterpolations<
               TypeMap,
               Obj & {

@@ -7,7 +7,8 @@
     "publish-to-npm": "npm run publish-to-npm --workspaces --if-present",
     "version:patch": "npm run version:patch --workspaces --if-present",
     "version:minor": "npm run version:minor --workspaces --if-present",
-    "version:major": "npm run version:major --workspaces --if-present"
+    "version:major": "npm run version:major --workspaces --if-present",
+    "dev": "npm run dev -w packages/react-intl-examples"
   },
   "author": "jarvispact <jarvispact@gmail.com>",
   "license": "MIT",
