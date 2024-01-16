@@ -1,6 +1,6 @@
 {
   "name": "@typesafe-intl/core",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A ICU message format parser written in Typescript's typesystem for interpolation values that are inferred automatically.",
   "type": "module",
   "sideEffects": false,
