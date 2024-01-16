@@ -135,16 +135,27 @@ type _Tokenize<
                         CurlyBracketCounter,
                         TailTail
                     >
-                  : _Tokenize<
-                        Tokens,
-                        State,
-                        NameBuffer,
-                        TypeBuffer,
-                        FormatBuffer,
-                        OptionsBuffer,
-                        CurlyBracketCounter,
-                        Tail
-                    >
+                  : Tail extends `<${infer TailTail}`
+                    ? _Tokenize<
+                          Tokens,
+                          States['Escaped'],
+                          NameBuffer,
+                          TypeBuffer,
+                          FormatBuffer,
+                          OptionsBuffer,
+                          CurlyBracketCounter,
+                          TailTail
+                      >
+                    : _Tokenize<
+                          Tokens,
+                          State,
+                          NameBuffer,
+                          TypeBuffer,
+                          FormatBuffer,
+                          OptionsBuffer,
+                          CurlyBracketCounter,
+                          Tail
+                      >
               : Head extends '<'
                 ? _Tokenize<
                       Tokens,
@@ -476,7 +487,7 @@ type _Tokenize<
                             CurlyBracketCounter,
                             TailTail
                         >
-                      : Tail extends `${string}}${infer TailTail}`
+                      : Tail extends `${string}>'${infer TailTail}`
                         ? _Tokenize<
                               Tokens,
                               States['Start'],
@@ -487,7 +498,16 @@ type _Tokenize<
                               CurlyBracketCounter,
                               TailTail
                           >
-                        : 'no idea what to do here'
+                        : _Tokenize<
+                              Tokens,
+                              State,
+                              NameBuffer,
+                              TypeBuffer,
+                              FormatBuffer,
+                              OptionsBuffer,
+                              CurlyBracketCounter,
+                              Tail
+                          >
                   : State extends States['RichText']
                     ? Head extends '>'
                         ? Tail extends `${infer Children}</${Trim<

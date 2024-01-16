@@ -22,24 +22,25 @@ import {
 // ===========================================================
 // string interpolations
 
-export type StringTest01 = Expect<Equals<Tokenize<string>, []>>;
-export type StringTest02 = Expect<Equals<Tokenize<''>, []>>;
-export type StringTest03 = Expect<Equals<Tokenize<'Hello'>, []>>;
-export type StringTest04 = Expect<
+export type StringTest1 = Expect<Equals<Tokenize<string>, []>>;
+export type StringTest2 = Expect<Equals<Tokenize<''>, []>>;
+export type StringTest3 = Expect<Equals<Tokenize<'Hello'>, []>>;
+export type StringTest4 = Expect<
     Equals<Tokenize<'Hello {name}'>, [StringInterpolationToken<'name'>]>
 >;
-export type StringTest05 = Expect<Equals<Tokenize<"Hello '{name}">, []>>;
-export type StringTest06 = Expect<Equals<Tokenize<"Hello '{name}'">, []>>;
-export type StringTest07 = Expect<
+export type StringTest5 = Expect<Equals<Tokenize<"Hello '{name}">, []>>;
+export type StringTest6 = Expect<Equals<Tokenize<"Hello '{name}'">, []>>;
+export type StringTest7 = Expect<
     Equals<
         Tokenize<'Hello {firstname} {lastname}'>,
         [StringInterpolationToken<'firstname'>, StringInterpolationToken<'lastname'>]
     >
 >;
-export type StringTest08 = Expect<
-    Equals<Tokenize<"Hello '{firstname} {lastname}">, [StringInterpolationToken<'lastname'>]>
+export type StringTest8 = Expect<Equals<Tokenize<"Hello '{firstname} {lastname}">, []>>;
+export type StringTest9 = Expect<
+    Equals<Tokenize<"Hello '{firstname}' {lastname}">, [StringInterpolationToken<'lastname'>]>
 >;
-export type StringTest09 = Expect<Equals<Tokenize<"Hello '{firstname} {lastname}'">, []>>;
+export type StringTest10 = Expect<Equals<Tokenize<"Hello '{firstname} {lastname}'">, []>>;
 
 // ===========================================================
 // ===========================================================
@@ -58,12 +59,15 @@ export type NumberTest4 = Expect<
     >
 >;
 export type NumberTest5 = Expect<
+    Equals<Tokenize<"Count: '{num, number} Other count: {num2, number}">, []>
+>;
+export type NumberTest6 = Expect<
     Equals<
-        Tokenize<"Count: '{num, number} Other count: {num2, number}">,
+        Tokenize<"Count: '{num, number}' Other count: {num2, number}">,
         [NumberInterpolationToken<'num2'>]
     >
 >;
-export type NumberTest6 = Expect<
+export type NumberTest7 = Expect<
     Equals<Tokenize<"Count: '{num, number} Other count: {num2, number}'">, []>
 >;
 
@@ -90,12 +94,15 @@ export type NumberFormatTest4 = Expect<
     >
 >;
 export type NumberFormatTest5 = Expect<
+    Equals<Tokenize<"Count: '{num, number, percent} Other count: {num2, number, percent}">, []>
+>;
+export type NumberFormatTest6 = Expect<
     Equals<
-        Tokenize<"Count: '{num, number, percent} Other count: {num2, number, percent}">,
+        Tokenize<"Count: '{num, number, percent}' Other count: {num2, number, percent}">,
         [NumberFormatInterpolationToken<'num2', 'percent'>]
     >
 >;
-export type NumberFormatTest6 = Expect<
+export type NumberFormatTest7 = Expect<
     Equals<Tokenize<"Count: '{num, number, percent} Other count: {num2, number, percent}'">, []>
 >;
 
@@ -116,12 +123,15 @@ export type DateTest4 = Expect<
     >
 >;
 export type DateTest5 = Expect<
+    Equals<Tokenize<"Today is: '{today, date} yesterday was: {yesterday, date}">, []>
+>;
+export type DateTest6 = Expect<
     Equals<
-        Tokenize<"Today is: '{today, date} yesterday was: {yesterday, date}">,
+        Tokenize<"Today is: '{today, date}' yesterday was: {yesterday, date}">,
         [DateInterpolationToken<'yesterday'>]
     >
 >;
-export type DateTest6 = Expect<
+export type DateTest7 = Expect<
     Equals<Tokenize<"Today is: '{today, date} yesterday was: {yesterday, date}'">, []>
 >;
 
@@ -148,12 +158,15 @@ export type DateFormatTest4 = Expect<
     >
 >;
 export type DateFormatTest5 = Expect<
+    Equals<Tokenize<"Today is: '{today, date, long} yesterday was: {yesterday, date, long}">, []>
+>;
+export type DateFormatTest6 = Expect<
     Equals<
-        Tokenize<"Today is: '{today, date, long} yesterday was: {yesterday, date, long}">,
+        Tokenize<"Today is: '{today, date, long}' yesterday was: {yesterday, date, long}">,
         [DateFormatInterpolationToken<'yesterday', 'long'>]
     >
 >;
-export type DateFormatTest6 = Expect<
+export type DateFormatTest7 = Expect<
     Equals<Tokenize<"Today is: '{today, date, long} yesterday was: {yesterday, date, long}'">, []>
 >;
 
@@ -174,12 +187,15 @@ export type TimeTest4 = Expect<
     >
 >;
 export type TimeTest5 = Expect<
+    Equals<Tokenize<"Now is: '{now, time} Before it was: {before, time}">, []>
+>;
+export type TimeTest6 = Expect<
     Equals<
-        Tokenize<"Now is: '{now, time} Before it was: {before, time}">,
+        Tokenize<"Now is: '{now, time}' Before it was: {before, time}">,
         [TimeInterpolationToken<'before'>]
     >
 >;
-export type TimeTest6 = Expect<
+export type TimeTest7 = Expect<
     Equals<Tokenize<"Now is: '{now, time} Before it was: {before, time}'">, []>
 >;
 
@@ -203,12 +219,15 @@ export type TimeFormatTest4 = Expect<
     >
 >;
 export type TimeFormatTest5 = Expect<
+    Equals<Tokenize<"Now is: '{now, time, long} Before it was: {before, time, long}">, []>
+>;
+export type TimeFormatTest6 = Expect<
     Equals<
-        Tokenize<"Now is: '{now, time, long} Before it was: {before, time, long}">,
+        Tokenize<"Now is: '{now, time, long}' Before it was: {before, time, long}">,
         [TimeFormatInterpolationToken<'before', 'long'>]
     >
 >;
-export type TimeFormatTest6 = Expect<
+export type TimeFormatTest7 = Expect<
     Equals<Tokenize<"Now is: '{now, time, long} Before it was: {before, time, long}'">, []>
 >;
 
@@ -252,8 +271,6 @@ export type SelectTest3 = Expect<
 // ===========================================================
 // ===========================================================
 // plural interpolations
-
-// TODO: quoting / escaping does not work with plural
 
 export type PluralTest1 = Expect<
     Equals<
@@ -313,12 +330,28 @@ export type PluralTest5 = Expect<
     >
 >;
 
+export type PluralTest6 = Expect<
+    Equals<Tokenize<"Cart: '{itemCount, plural, one {item} other {items}}">, []>
+>;
+
+export type PluralTest7 = Expect<
+    Equals<
+        Tokenize<"Cart: '{itemCount, plural, one {item} other {items}} Some more info {whaat}">,
+        []
+    >
+>;
+
+export type PluralTest8 = Expect<
+    Equals<
+        Tokenize<"Cart: '{itemCount, plural, one {item} other {items}}' Some more info {whaat}">,
+        [StringInterpolationToken<'whaat'>]
+    >
+>;
+
 // ===========================================================
 // ===========================================================
 // ===========================================================
 // select-ordinal interpolations
-
-// TODO: quoting / escaping does not work with select-ordinal
 
 export type SelectOrdinalTest1 = Expect<
     Equals<
@@ -347,6 +380,27 @@ export type SelectOrdinalTest3 = Expect<
     Equals<
         Tokenize<typeof selectOrdinalWithNewLines>,
         [SelectOrdinalInterpolationToken<'year', 'one' | 'two' | 'few' | 'other'>]
+    >
+>;
+
+export type SelectOrdinalTest4 = Expect<
+    Equals<
+        Tokenize<"It's my cat's '{year, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} birthday!">,
+        []
+    >
+>;
+
+export type SelectOrdinalTest5 = Expect<
+    Equals<
+        Tokenize<"It's my cat's '{year, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} birthday! {whaat}">,
+        []
+    >
+>;
+
+export type SelectOrdinalTest6 = Expect<
+    Equals<
+        Tokenize<"It's my cat's '{year, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}' birthday! {whaat}">,
+        [StringInterpolationToken<'whaat'>]
     >
 >;
 
@@ -388,5 +442,18 @@ export type RichTextTest4 = Expect<
             StringInterpolationToken<'name'>,
             DateInterpolationToken<'today'>,
         ]
+    >
+>;
+
+export type RichTextTest5 = Expect<Equals<Tokenize<"The answer is '<boldThis>42</boldThis>">, []>>;
+
+export type RichTextTest6 = Expect<
+    Equals<Tokenize<"The answer is '<boldThis>42</boldThis> and here is a <link>link</link>">, []>
+>;
+
+export type RichTextTest7 = Expect<
+    Equals<
+        Tokenize<"The answer is '<boldThis>42</boldThis>' and here is a <link>link</link>">,
+        [RichTextInterpolationToken<'link'>]
     >
 >;
