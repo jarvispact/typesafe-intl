@@ -1,27 +1,39 @@
-import { ExtendTypesForInterpolations, InferInterpolations, Tokenize } from '@typesafe-intl/core';
+import { DefaultTypesForInterpolations as CoreDefaultTypesForInterpolations, InferInterpolations, Tokenize } from '@typesafe-intl/core';
 import { ReactNode } from 'react';
-type _TypesForInterpolations = ExtendTypesForInterpolations<{
+export interface TypesForInterpolations extends CoreDefaultTypesForInterpolations {
     'rich-text-interpolation': (chunks: ReactNode[]) => ReactNode;
-}>;
-export interface TypesForInterpolations extends _TypesForInterpolations {
 }
-type CommonFormattedMessageProps<Translation extends string> = {
-    defaultMessage?: Translation;
-    id?: string;
+type CommonFormattedMessageProps<DefaultMessage extends string, Id extends string> = {
+    defaultMessage?: DefaultMessage;
+    id?: Id;
     description?: string;
     tagName?: React.ElementType<any>;
 };
-export type FormattedMessageProps<Translation extends string> = Tokenize<Translation> extends [] ? CommonFormattedMessageProps<Translation> : CommonFormattedMessageProps<Translation> & {
-    values: InferInterpolations<Translation, TypesForInterpolations>;
+export type FormattedMessageProps<DefaultMessage extends string, Id extends string> = Tokenize<DefaultMessage> extends [] ? CommonFormattedMessageProps<DefaultMessage, Id> : CommonFormattedMessageProps<DefaultMessage, Id> & {
+    values: InferInterpolations<DefaultMessage, TypesForInterpolations>;
 };
-export declare const FormattedMessage: <Translation extends string>(props: FormattedMessageProps<Translation>) => import("react/jsx-runtime").JSX.Element;
-type FormatMessageDescriptor<Translation extends string> = {
+export declare const FormattedMessage: <DefaultMessage extends string, Id extends string>(props: FormattedMessageProps<DefaultMessage, Id>) => import("react/jsx-runtime").JSX.Element;
+type CommonCreateFormattedMessageProps<Messages extends Record<string, string>, Id extends keyof Messages> = {
+    id: Id;
+    description?: string;
+    tagName?: React.ElementType<any>;
+};
+export type CreateFormattedMessageProps<Messages extends Record<string, string>, Id extends keyof Messages> = Tokenize<Messages[Id]> extends [] ? CommonCreateFormattedMessageProps<Messages, Id> : CommonCreateFormattedMessageProps<Messages, Id> & {
+    values: InferInterpolations<Messages[Id], TypesForInterpolations>;
+};
+export declare const createFormattedMessageComponent: <Messages extends Record<string, string>>() => <Id extends keyof Messages>(props: CreateFormattedMessageProps<Messages, Id>) => import("react/jsx-runtime").JSX.Element;
+type FormatMessageDescriptor<DefaultMessage extends string> = {
+    defaultMessage?: DefaultMessage;
     id?: string;
-    defaultMessage?: Translation;
     description?: string;
 };
-export declare const useIntl: () => {
-    formatMessage: <Translation extends string>(messageDescriptor: FormatMessageDescriptor<Translation>, values?: InferInterpolations<Translation, TypesForInterpolations> | undefined) => string;
+type FormatMessageIdDescriptor<Messages extends Record<string, string>, Id extends keyof Messages> = {
+    id?: Id;
+    description?: string;
+};
+type RichTextLike = `${string}<${string}>${string}</${string}>${string}`;
+export declare const useIntl: <Messages extends Record<string, string>>() => {
+    formatMessage: Record<string, string> extends Messages ? <DefaultMessage extends string>(...args: Tokenize<DefaultMessage> extends [] ? [FormatMessageDescriptor<DefaultMessage>] : [FormatMessageDescriptor<DefaultMessage>, InferInterpolations<DefaultMessage, TypesForInterpolations>]) => DefaultMessage extends `${string}<${string}>${string}</${string}>${string}` ? ReactNode : string : <Id extends keyof Messages>(...args: Tokenize<Messages[Id]> extends [] ? [FormatMessageIdDescriptor<Messages, Id>] : [FormatMessageIdDescriptor<Messages, Id>, InferInterpolations<Messages[Id], TypesForInterpolations>]) => Messages[Id] extends `${string}<${string}>${string}</${string}>${string}` ? ReactNode : string;
     formatters: import("react-intl").Formatters;
     textComponent?: import("react").ComponentType<{}> | keyof import("react").ReactHTML | undefined;
     wrapRichTextChunksInFragment?: boolean | undefined;
