@@ -22,7 +22,7 @@ It consists of two main packages:
 1. [@typesafe-intl/core](packages/core/README.md): A ICU message format parser written in Typescript.
 2. [@typesafe-intl/react-intl](packages/react-intl/README.md): A wrapper around the popular [react-intl](https://www.npmjs.com/package/react-intl) library, integrating `@typesafe-intl/core` for automatic typesafe interpolation values.
 
-This package does not contain or adds any runtime javascript code. It works just at the type level. All of the javascript functionality comes from the well established `react-intl` library itself.
+> **This package has the same API as `react-intl` and does not add any runtime javascript code. It works just at the type level. All of the javascript functionality comes from the `react-intl` library itself.**
 
 ## Quick Start Guide
 
