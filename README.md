@@ -125,7 +125,7 @@ const SayHi = () => {
 | Date with format: full       | `"Sale begins on {start, date, full}"`                                                           | `{ start: Date }`                              |
 | Time                         | `"Coupon expires at {expires, time}"`                                                            | `{ expires: Date }`                            |
 | Time with format: full       | `"Coupon expires at {expires, time, full}"`                                                      | `{ expires: Date }`                            |
-| Select (enums)               | `"{gender, select, male {He} female {She} other {They}} will respond shortly."`                  | `{ gender: 'male' \| 'female' \| 'other' }`    |
+| Select                       | `"{gender, select, male {He} female {She} other {They}} will respond shortly."`                  | `{ gender: 'male' \| 'female' \| 'other' }`    |
 | Plural                       | `"You have {itemCount, plural, =0 {no items} one {# item} other {# items}}."`                    | `{ itemCount: number }`                        |
 | Selectordinal                | `"It's my cat's {birthday, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} birthday!"` | `{ birthday: number }`                         |
 | Rich text                    | `"Our price is <bold>very low</bold>"`                                                           | `{ bold: (chunks: ReactNode[]) => ReactNode }` |
