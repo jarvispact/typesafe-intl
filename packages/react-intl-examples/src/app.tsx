@@ -2,6 +2,7 @@ import {
     FormattedMessage,
     createFormattedMessageComponent,
     useIntl,
+    defineMessages,
 } from '@typesafe-intl/react-intl';
 import { useState } from 'react';
 import { IntlProvider } from 'react-intl';
@@ -288,6 +289,221 @@ const FormatMessageHookUsingDefaultMessage = () => {
     );
 };
 
+const definedMessages = defineMessages({
+    test1: {
+        id: 'void',
+        description: 'void',
+        defaultMessage: 'Hello',
+    },
+    test2: {
+        id: 'void',
+        description: 'void',
+        defaultMessage: 'Hello {who}!',
+    },
+    test3: {
+        id: 'void',
+        description: 'void',
+        defaultMessage: '{unreadEmails, number} unread Emails',
+    },
+    test4: {
+        id: 'void',
+        description: 'void',
+        defaultMessage: '{percent, number, percent} complete',
+    },
+    test5: {
+        id: 'void',
+        description: 'void',
+        defaultMessage: '{percent, number, ::percent} complete',
+    },
+    test6: {
+        id: 'void',
+        description: 'void',
+        defaultMessage: 'Price: {price, number, ::currency/GBP}',
+    },
+    test7: {
+        id: 'void',
+        description: 'void',
+        defaultMessage: `Sale begins on {start, date, full}`,
+    },
+    test8: {
+        id: 'void',
+        description: 'void',
+        defaultMessage: `Coupon expires at {expires, time, full}`,
+    },
+    test9: {
+        id: 'void',
+        description: 'void',
+        defaultMessage:
+            '{gender, select, male {He} female {She} other {They}} will respond shortly.',
+    },
+    test10: {
+        id: 'void',
+        description: 'void',
+        defaultMessage:
+            '{taxableArea, select, yes {An additional tax will be collected.} other {No taxes apply.}}',
+    },
+    test11: {
+        id: 'void',
+        description: 'void',
+        defaultMessage: 'Cart: {itemCount} {itemCount, plural, one {item} other {items}}',
+    },
+    test12: {
+        id: 'void',
+        description: 'void',
+        defaultMessage: 'You have {itemCount, plural, =0 {no items} one {# item} other {# items}}.',
+    },
+    test13: {
+        id: 'void',
+        description: 'void',
+        defaultMessage:
+            "It's my cat's {birthday, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} birthday!",
+    },
+    test14: {
+        id: 'void',
+        description: 'void',
+        defaultMessage:
+            'Our price is <boldThis>{price, number, ::currency/USD}</boldThis> with <link>{pct, number, ::percent} discount</link>',
+    },
+    test15: {
+        id: 'void',
+        description: 'void',
+        defaultMessage: "Hello '{firstname}",
+    },
+    test16: {
+        id: 'void',
+        description: 'void',
+        defaultMessage: "Hello '{firstname}' {lastname}",
+    },
+    test17: {
+        id: 'void',
+        description: 'void',
+        defaultMessage: "'{unreadEmails, number} unread Emails",
+    },
+});
+
+const FormattedMessageUsingDefineMessages = () => {
+    return (
+        <div>
+            <p>
+                <FormattedMessage {...definedMessages.test1} />
+            </p>
+            <p>
+                <FormattedMessage {...definedMessages.test2} values={{ who: 'World' }} />
+            </p>
+            <p>
+                <FormattedMessage {...definedMessages.test3} values={{ unreadEmails: 2 }} />
+            </p>
+            <p>
+                <FormattedMessage {...definedMessages.test4} values={{ percent: 0.5 }} />
+            </p>
+            <p>
+                <FormattedMessage {...definedMessages.test5} values={{ percent: 0.25 }} />
+            </p>
+            <p>
+                <FormattedMessage {...definedMessages.test6} values={{ price: 42 }} />
+            </p>
+            <p>
+                <FormattedMessage {...definedMessages.test7} values={{ start: new Date() }} />
+            </p>
+            <p>
+                <FormattedMessage {...definedMessages.test8} values={{ expires: new Date() }} />
+            </p>
+            {(['male', 'female', 'other'] as const).map((gender) => (
+                <p key={gender}>
+                    <FormattedMessage {...definedMessages.test9} values={{ gender }} />
+                </p>
+            ))}
+            {(['yes', 'other'] as const).map((taxableArea) => (
+                <p key={taxableArea}>
+                    <FormattedMessage {...definedMessages.test10} values={{ taxableArea }} />
+                </p>
+            ))}
+            {[1, 2].map((itemCount) => (
+                <p key={itemCount}>
+                    <FormattedMessage {...definedMessages.test11} values={{ itemCount }} />
+                </p>
+            ))}
+            {[0, 1, 2].map((itemCount) => (
+                <p key={itemCount}>
+                    <FormattedMessage {...definedMessages.test12} values={{ itemCount }} />
+                </p>
+            ))}
+            {[1, 2, 3, 4, 5, 6].map((birthday) => (
+                <p key={birthday}>
+                    <FormattedMessage {...definedMessages.test13} values={{ birthday }} />
+                </p>
+            ))}
+            <p>
+                <FormattedMessage
+                    {...definedMessages.test14}
+                    values={{
+                        boldThis: (chunks) => <b>{chunks}</b>,
+                        link: (chunks) => (
+                            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">{chunks}</a>
+                        ),
+                        pct: 0.5,
+                        price: 42,
+                    }}
+                />
+            </p>
+            <p>
+                <FormattedMessage {...definedMessages.test15} />
+            </p>
+            <p>
+                <FormattedMessage {...definedMessages.test16} values={{ lastname: 'Stark' }} />
+            </p>
+            <p>
+                <FormattedMessage {...definedMessages.test17} />
+            </p>
+        </div>
+    );
+};
+
+const FormatMessageHookUsingDefineMessages = () => {
+    const { formatMessage } = useIntl();
+
+    return (
+        <div>
+            <p>{formatMessage(definedMessages.test1)}</p>
+            <p>{formatMessage(definedMessages.test2, { who: 'World' })}</p>
+            <p>{formatMessage(definedMessages.test3, { unreadEmails: 3 })}</p>
+            <p>{formatMessage(definedMessages.test4, { percent: 0.3 })}</p>
+            <p>{formatMessage(definedMessages.test5, { percent: 0.56 })}</p>
+            <p>{formatMessage(definedMessages.test6, { price: 84 })}</p>
+            <p>{formatMessage(definedMessages.test7, { start: new Date() })}</p>
+            <p>{formatMessage(definedMessages.test8, { expires: new Date() })}</p>
+            {(['male', 'female', 'other'] as const).map((gender) => (
+                <p key={gender}>{formatMessage(definedMessages.test9, { gender })}</p>
+            ))}
+            {(['yes', 'other'] as const).map((taxableArea) => (
+                <p key={taxableArea}>{formatMessage(definedMessages.test10, { taxableArea })}</p>
+            ))}
+            {[1, 2].map((itemCount) => (
+                <p key={itemCount}>{formatMessage(definedMessages.test11, { itemCount })}</p>
+            ))}
+            {[0, 1, 2].map((itemCount) => (
+                <p key={itemCount}>{formatMessage(definedMessages.test12, { itemCount })}</p>
+            ))}
+            {[1, 2, 3, 4, 5, 6].map((birthday) => (
+                <p key={birthday}>{formatMessage(definedMessages.test13, { birthday })}</p>
+            ))}
+            <p>
+                {formatMessage(definedMessages.test14, {
+                    boldThis: (chunks) => <b>{chunks}</b>,
+                    link: (chunks) => (
+                        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">{chunks}</a>
+                    ),
+                    pct: 0.5,
+                    price: 42,
+                })}
+            </p>
+            <p>{formatMessage(definedMessages.test15)}</p>
+            <p>{formatMessage(definedMessages.test16, { lastname: 'Stark' })}</p>
+            <p>{formatMessage(definedMessages.test17)}</p>
+        </div>
+    );
+};
+
 // declare module '@typesafe-intl/react-intl' {
 //     export interface TypesForInterpolations {
 //         'string-interpolation': string | number;
@@ -494,6 +710,8 @@ const FormatMessageHookUsingId = () => {
 type View =
     | 'formatted-message-with-default-message'
     | 'format-message-hook-with-default-message'
+    | 'formatted-message-with-define-messages'
+    | 'format-message-hook-with-define-messages'
     | 'formatted-message-with-id'
     | 'format-message-hook-with-id';
 
@@ -507,6 +725,12 @@ export const App = () => {
                 </button>
                 <button onClick={() => setView('format-message-hook-with-default-message')}>
                     formatMessage hook with defaultMessage
+                </button>
+                <button onClick={() => setView('formatted-message-with-define-messages')}>
+                    FormattedMessage with defineMessages
+                </button>
+                <button onClick={() => setView('format-message-hook-with-define-messages')}>
+                    formatMessage hook with defineMessages
                 </button>
                 <button onClick={() => setView('formatted-message-with-id')}>
                     FormattedMessage with id
@@ -534,6 +758,30 @@ export const App = () => {
                             <div>
                                 <h2>formatMessage hook with defaultMessage. Locale: {locale}</h2>
                                 <FormatMessageHookUsingDefaultMessage />
+                            </div>
+                        </IntlProvider>
+                    ))}
+                </div>
+            )}
+            {view === 'formatted-message-with-define-messages' && (
+                <div className="section">
+                    {['en-US', 'en-GB'].map((locale) => (
+                        <IntlProvider key={locale} defaultLocale={locale} locale={locale}>
+                            <div>
+                                <h2>FormattedMessage with defineMessages. Locale: {locale}</h2>
+                                <FormattedMessageUsingDefineMessages />
+                            </div>
+                        </IntlProvider>
+                    ))}
+                </div>
+            )}
+            {view === 'format-message-hook-with-define-messages' && (
+                <div className="section">
+                    {['en-US', 'en-GB'].map((locale) => (
+                        <IntlProvider key={locale} defaultLocale={locale} locale={locale}>
+                            <div>
+                                <h2>formatMessage hook with defineMessages. Locale: {locale}</h2>
+                                <FormatMessageHookUsingDefineMessages />
                             </div>
                         </IntlProvider>
                     ))}

@@ -1,4 +1,8 @@
-import { FormattedMessage as _FormattedMessage, useIntl as _useIntl } from 'react-intl';
+import {
+    FormattedMessage as _FormattedMessage,
+    useIntl as _useIntl,
+    defineMessages as _defineMessages,
+} from 'react-intl';
 import {
     DefaultTypesForInterpolations as CoreDefaultTypesForInterpolations,
     InferInterpolations,
@@ -110,3 +114,16 @@ export const useIntl = <Messages extends Record<string, string>>() => {
         formatMessage: intl.formatMessage as unknown as FormatMessage,
     };
 };
+
+// ==========================================================
+// defineMessages
+
+type MessageDescriptor = {
+    id?: string;
+    description?: string;
+    defaultMessage: string;
+};
+
+export const defineMessages = <const Messages extends Record<string, MessageDescriptor>>(
+    messages: Messages,
+) => _defineMessages(messages) as Messages;

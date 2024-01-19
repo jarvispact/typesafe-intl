@@ -63,4 +63,10 @@ export declare const useIntl: <Messages extends Record<string, string>>() => {
     formatListToParts<T_2 extends ReactNode>(values: readonly (string | T_2)[], opts?: import("react-intl").FormatListOptions | undefined): import("@formatjs/intl-listformat").Part[];
     formatDisplayName(value: string | number | Record<string, unknown>, opts: import("react-intl").FormatDisplayNameOptions): string | undefined;
 };
+type MessageDescriptor = {
+    id?: string;
+    description?: string;
+    defaultMessage: string;
+};
+export declare const defineMessages: <const Messages extends Record<string, MessageDescriptor>>(messages: Messages) => Messages;
 export {};

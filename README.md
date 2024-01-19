@@ -11,7 +11,7 @@ Automatic typesafe interpolation values for [ICU message format](https://formatj
 
 Here you can see how the type for the `values` prop is automatically added/removed and inferred from the `defaultMessage` prop as you type.
 
-![example](res/formatted-message-example.gif)
+![example](res/typesafe-intl-select-example.gif)
 
 ## Overview
 
@@ -36,15 +36,15 @@ npm install @typesafe-intl/core @typesafe-intl/react-intl
 
 ### Usage
 
-There are 2 ways on how you can use the powerful automatic type inference for your interpolation values. In both ways the `values` object is automatically inferred based on either your `defaultMessage` or `id` prop.
+There are 3 ways on how you can use the powerful automatic type inference for your interpolation values. In all ways the `values` object is automatically inferred based on either your `defaultMessage` or `id` prop.
 
-1. Using a `defaultMessage`
+1. Using a `defaultMessage` directly
 
 ```tsx
 import { FormattedMessage, useIntl } from '@typesafe-intl/react-intl';
 
 // Component API
-const SayHi = () => {
+const Example = () => {
     return (
         <p>
             <FormattedMessage
@@ -57,7 +57,7 @@ const SayHi = () => {
 }
 
 // Hook API
-const SayHi = () => {
+const Example = () => {
     const { formatMessage } = useIntl();
     return (
         <p>
@@ -70,12 +70,12 @@ const SayHi = () => {
 }
 ```
 
-2. Using a `id`
+2. Using a `id` with a central definition of your messages
 
 ```tsx
 import { createFormattedMessageComponent, useIntl } from '@typesafe-intl/react-intl';
 
-// define your messages and annotate them with `as const`.
+// define your messages once and annotate them with `as const`.
 const messages = {
     SAY_HI: 'Hello {who}!'
     ...
@@ -85,7 +85,7 @@ const messages = {
 const FormattedMessage = createFormattedMessageComponent<typeof messages>();
 
 // Component API
-const SayHi = () => {
+const Example = () => {
     return (
         <p>
             <FormattedMessage
@@ -97,7 +97,7 @@ const SayHi = () => {
 }
 
 // Hook API
-const SayHi = () => {
+const Example = () => {
     // pass the type of your messages to the hook for autcompletion on the `id` prop and typesafe interpolations
     const { formatMessage } = useIntl<typeof messages>();
     return (
@@ -105,6 +105,58 @@ const SayHi = () => {
             {formatMessage(
                 { id: 'SAY_HI' }, // autocompletion for the id
                 { who: 'World' } // inferred as { who: string }
+            )}
+        </p>
+    );
+}
+```
+
+3. Using `defineMessages`
+
+If you are using `defineMessages` to define your translations with `react-inl` you can either
+
+- Keep using it, but annotate the object with `as const`. Example: `const messages = defineMessages({ ... } as const);`
+- Or use the `defineMessages` function from `@typesafe-intl/react-intl`
+
+The important part here is that the type of the `defaultMessage` is not `string` but the literal type ( `'Hello {who}!'` ).
+
+```tsx
+import { FormattedMessage, useIntl, defineMessages } from '@typesafe-intl/react-intl';
+
+// define your messages
+const messages = defineMessages({
+    one: {
+        id: 'one',
+        description: 'description for one',
+        defaultMessage: 'Hello {who}!',
+    },
+    two: {
+        id: 'two',
+        description: 'description for two',
+        defaultMessage: '{unreadEmails, number} unread Emails',
+    },
+});
+
+// Component API
+const Example = () => {
+    return (
+        <p>
+            <FormattedMessage
+                {...messages.one}
+                values={{ who: 'World' }} // inferred as { who: string }
+            />
+        </p>
+    );
+}
+
+// Hook API
+const Example = () => {
+    const { formatMessage } = useIntl();
+    return (
+        <p>
+            {formatMessage(
+                messages.two,
+                { unreadEmails: 42 } // inferred as { unreadEmails: number }
             )}
         </p>
     );
